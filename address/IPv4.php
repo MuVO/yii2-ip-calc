@@ -1,4 +1,4 @@
-<?php namespace muvo\tools\ip\address;
+<?php namespace muvo\yii2\ip\address;
 
 use yii\base\Object;
 
