@@ -13,7 +13,7 @@ class IPv4 extends Object
 
     public function init(){
         if(empty($this->prefixlen)&&!empty($this->netmask))
-            $this->prefixlen = 32 - ~ $this->netmask;
+            $this->prefixlen = 32 - ~ ($this->netmask+1);
 
         $this->network = $this->address & $this->netmask;
         $this->broadcast = $this->address | $this->netmask ^ ip2long('255.255.255.255');
