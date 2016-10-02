@@ -12,15 +12,22 @@ class IPv4 extends Object
     private $broadcast;
 
     public function init(){
-        parent::init();
+        if(empty($this->prefixlen)&&!empty($this->netmask))
+            $this->prefixlen = 32 - ~ $this->netmask;
+
         $this->network = $this->address & $this->netmask;
         $this->broadcast = $this->address | $this->netmask ^ ip2long('255.255.255.255');
     }
 
-    public static function create($string){
+    public static function create($string,$mask=null){
         $data = array();
 
-        if(strpos($string,'/')){
+        if(is_long($string)){
+            $data['address'] = $string;
+            $data['netmask'] = is_long($mask)
+                ? $mask
+                : ip2long('255.255.255.255');
+        }elseif(strpos($string,'/')){
             list($address,$prefix) = explode('/',$string,2);
             $data['address'] = ip2long($address);
             if(is_numeric($prefix)&&$prefix>=0&&$prefix<=32){
