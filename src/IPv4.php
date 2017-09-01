@@ -19,25 +19,22 @@ class IPv4 extends Model
     {
         $ip = new \Net_IPv4();
 
-
         if (is_long($string)) {
             $ip->long = $string;
-            if (is_long($mask)) {
-                $ip->bitmask = $mask;
-            }
         } elseif (is_string($string) && $ip->validateIP($string)) {
             $ip->ip = $string;
-            if (is_numeric($mask)) {
-                if ($mask < 0) {
-                    $ip->netmask = long2ip($mask);
-                } elseif ($mask <= 32) {
-                    $ip->bitmask = $mask;
-                }
-            } elseif (is_string($mask) && $ip->validateNetmask($mask)) {
-                $ip->netmask = $mask;
-            }
         } elseif (!$ip = $ip->parseAddress($string)) {
             throw new InvalidParamException("Can't parse given address");
+        }
+
+        if (is_numeric($mask)) {
+            if ($mask < 0) {
+                $ip->netmask = long2ip($mask);
+            } elseif ($mask <= 32) {
+                $ip->bitmask = $mask;
+            }
+        } elseif (is_string($mask) && $ip->validateNetmask($mask)) {
+            $ip->netmask = $mask;
         }
 
         $ip->calculate();
@@ -72,6 +69,14 @@ class IPv4 extends Model
     public function getMask()
     {
         return $this->ip->netmask;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrefixlen()
+    {
+        return $this->ip->bitmask ?? 32;
     }
 
     /**
