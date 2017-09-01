@@ -1,8 +1,10 @@
 {
   "name": "muvo/yii2-ip-calc",
-  "version": "2016.04.30.1",
+  "version": "2017-dev",
   "type": "yii2-extension",
   "description": "Simple IP calculator, which can be used as basic Model in Yii2",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "keywords": [
     "yii2",
     "ip",
@@ -16,11 +18,12 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2"
+    "yiisoft/yii2": "~2.0.0",
+    "pear/net_ipv4": "*"
   },
   "autoload": {
     "psr-4": {
-      "muvo\\yii\\ip\\": ""
+      "muvo\\yii\\ip\\address\\": "src/"
     }
   }
 }
